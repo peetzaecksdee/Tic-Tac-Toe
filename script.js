@@ -83,23 +83,49 @@ function gameLogic() {
 		return diagonal1.every(val => val == "X") || diagonal2.every(val => val == "O");
 	};
 
-	const place = (num) => {
-		if (num < 0 || num > 8) {
-			console.log("Please enter a valid placement.");
-			return;
-		}
+	const checkIfDraw = () => {
+		if (!gameBoard.getBoard().some(val => val == " ")) 
+			return true;
+	}
 
+	const checkIfPlacable = (num) => {
 		if (gameBoard.getVal(num) !== " ") {
 			console.log("This point has already been taken.");
-			return;
+			return false;
 		}
+
+		return true
+	};
+
+	const checkWin = () => {
+		if (checkRows() || checkColumns() || checkDiagonal())
+			return true;
+		
+		return false;
+	}
+
+	const place = (num) => {
+		if (checkIfDraw()) {
+			console.log(gameBoard.getBoard());
+			console.log("The game ended in a draw.");
+			resetGame();
+			return false;
+		}
+
+		if (num < 0 || num > 8) {
+			console.log("Please enter a valid placement.");
+			return false;
+		}
+
+		if (!checkIfPlacable())
+			return false;
 
 		gameBoard.place(num, turnO ? "O" : "X");
 		console.log(gameBoard.getBoard());
 		if (checkWin()) {
 			console.log(`${turnO ? "O" : "X"} Win!`);
 			resetGame();
-			return;
+			return false;
 		};
 		
 		turnO = !turnO;
@@ -110,13 +136,6 @@ function gameLogic() {
 		turnO = true;
 		console.log("Please enter a number.");
 	};
-
-	const checkWin = () => {
-		if (checkRows() || checkColumns() || checkDiagonal())
-			return true;
-		
-		return false;
-	}
 
 	return { place, checkWin };
 }
