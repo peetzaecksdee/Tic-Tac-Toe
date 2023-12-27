@@ -105,25 +105,27 @@ function gameLogic() {
 	}
 
 	const place = (num) => {
-		if (checkIfDraw()) {
-			console.log(gameBoard.getBoard());
-			console.log("The game ended in a draw.");
-			resetGame();
-			return false;
-		}
 
 		if (num < 0 || num > 8) {
 			console.log("Please enter a valid placement.");
 			return false;
 		}
 
-		if (!checkIfPlacable())
+		if (!checkIfPlacable(num))
 			return false;
 
 		gameBoard.place(num, turnO ? "O" : "X");
 		console.log(gameBoard.getBoard());
+		
 		if (checkWin()) {
 			console.log(`${turnO ? "O" : "X"} Win!`);
+			resetGame();
+			return false;
+		};
+
+		if (checkIfDraw()) {
+			console.log(gameBoard.getBoard());
+			console.log("The game ended in a draw.");
 			resetGame();
 			return false;
 		};
