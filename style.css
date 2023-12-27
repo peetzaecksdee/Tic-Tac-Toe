@@ -1,12 +1,66 @@
 /* TODO: styling, duh */
 
+:root {
+  --header: 10vh;
+  --footer: 5vh;
+  --main: calc(100vh - var(--header) - var(--footer));
+  --main-color: #3b4252;
+  --hf-color: #2e3440;
+  --secondary-color: #d8dee9;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  font-family: Nunito;
+  color: var(--secondary-color);
+}
+
+/* Header thingy y'know */
 header {
-  height: 10vh;
-  width: 100%;
+  background-color: var(--hf-color);
+  height: var(--header);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-text {
+  font-size: 4.5rem;
+  font-weight: bold;
+}
+
+/* you cannot make a website without this thing ig */
+main {
+  background-color: var(--main-color);
+  height: var(--main);
+}
+
+/* i love foot (that's a joke) */
+footer {
+  background-color: var(--hf-color);
+  height: var(--footer);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+}
+
+.footer-text {
+  font-size: .75rem;
+}
+
+footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.my-profile {
+  width: 1.25rem;
+  height: 1.25rem;
 }
