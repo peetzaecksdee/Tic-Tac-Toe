@@ -76,11 +76,12 @@ function gameLogic() {
 
 	const checkDiagonal = () => {
 		let diagonals = [[gameBoard.getVal(0), gameBoard.getVal(4), gameBoard.getVal(8)], [gameBoard.getVal(2), gameBoard.getVal(4), gameBoard.getVal(6)]];
-		diagonals.forEach(diagonal => {
-			if (diagonal.every(val => val === "X") || diagonal.every(val => val === "O"))
+			if (diagonals[0].every(val => val === "X") || diagonals[0].every(val => val === "O"))
 				return true;
-		})
-		return false;
+			if (diagonals[1].every(val => val === "X") || diagonals[1].every(val => val === "O"))
+				return true;
+
+			return false;
 	};
 
 	const checkIfDraw = () => {
@@ -118,7 +119,7 @@ function gameLogic() {
 		} */
 
 		if (!checkIfPlacable(num))
-			return !turnO ? "O" : "X";
+			return false;
 
 		gameBoard.place(num, turnO ? "O" : "X");
 		//console.log(gameBoard.getBoard());
@@ -127,9 +128,7 @@ function gameLogic() {
 			//console.log(`${turnO ? "O" : "X"} Win!`);
 			headerTxt.textContent = `${turnO ? "O" : "X"} Win!`
 			lockBoard();
-		};
-
-		if (checkIfDraw()) {
+		} else if (checkIfDraw()) {
 			//console.log("Game is drawn.")
 			headerTxt.textContent = "Game is drawn."
 			lockBoard();
@@ -165,7 +164,11 @@ const headerTxt = document.querySelector(".header-text");
 for (let i = 0; i < btnBoxes.length; i++) {
 	const curBtnBox = btnBoxes[i];
 	curBtnBox.addEventListener("click", () => {
-		curBtnBox.querySelector("span").textContent = gameBlock.place(i)
+		const placePos = gameBlock.place(i)
+
+		if (placePos) {
+			curBtnBox.querySelector("span").textContent = placePos
+		}
 	});
 }
 
