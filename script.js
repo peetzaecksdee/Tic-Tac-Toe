@@ -121,15 +121,17 @@ function gameLogic() {
 			return !turnO ? "O" : "X";
 
 		gameBoard.place(num, turnO ? "O" : "X");
-		console.log(gameBoard.getBoard());
+		//console.log(gameBoard.getBoard());
 		
 		if (checkWin()) {
-			console.log(`${turnO ? "O" : "X"} Win!`);
+			//console.log(`${turnO ? "O" : "X"} Win!`);
+			headerTxt.textContent = `${turnO ? "O" : "X"} Win!`
 			lockBoard();
 		};
 
 		if (checkIfDraw()) {
-			console.log("Game is drawn.")
+			//console.log("Game is drawn.")
+			headerTxt.textContent = "Game is drawn."
 			lockBoard();
 		};
 		
@@ -141,6 +143,7 @@ function gameLogic() {
 	const resetGame = () => {
 		gameBoard.resetBoard();
 		turnO = true;
+		headerTxt.textContent = "Tic-Tac-Toe"
 		btnBoxes.forEach(btn => {
 			btn.querySelector("span").textContent = ""
 			btn.removeAttribute('disabled');
@@ -156,6 +159,7 @@ const gameBlock = gameLogic();
 // DOM thingies
 const btnBoxes = document.querySelectorAll(".btn-box");
 const restartBtn = document.querySelector(".restart-btn");
+const headerTxt = document.querySelector(".header-text");
 
 // Loop through the array of btnBoxes
 for (let i = 0; i < btnBoxes.length; i++) {
