@@ -38,6 +38,34 @@ header {
 main {
   background-color: var(--main-color);
   height: var(--main);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 25vw;
+  height: 40vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.btn-box {
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 3px solid var(--hf-color);
+  border-right: 3px solid var(--hf-color);
+}
+
+.no-r {
+  border-right: none;
+}
+
+.no-b {
+  border-bottom: none;
 }
 
 /* i love foot (that's a joke) */
