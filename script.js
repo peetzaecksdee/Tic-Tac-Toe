@@ -3,9 +3,6 @@
  * @param {number} milliseconds 
  * @returns {Promise} TimeoutPromise
  */
-function sleep(milliseconds) {
-	return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
 
 function initGameBoard() {
 	let gameBoard = [
@@ -42,7 +39,7 @@ function initGameBoard() {
 function gameLogic() {
 	const gameBoard = initGameBoard();
 	let turnO = true;
-	console.log("Please enter a number.");
+	// console.log("Please enter a number.");
 
 	/** 
 	This is for checking the rows ofc
@@ -69,7 +66,7 @@ function gameLogic() {
 			column.push(gameBoard.getVal(j));
 			
 
-			if (column.every(val => val == "X") || column.every(val => val == "O"))
+			if (column.every(val => val === "X") || column.every(val => val === "O"))
 				return true;
 			
 		}
@@ -78,9 +75,12 @@ function gameLogic() {
 	};
 
 	const checkDiagonal = () => {
-		let diagonal1 = [gameBoard.getVal(0), gameBoard.getVal(4), gameBoard.getVal(8)];
-		let diagonal2 = [gameBoard.getVal(2), gameBoard.getVal(4), gameBoard.getVal(6)];
-		return diagonal1.every(val => val == "X") || diagonal2.every(val => val == "O");
+		let diagonals = [[gameBoard.getVal(0), gameBoard.getVal(4), gameBoard.getVal(8)], [gameBoard.getVal(2), gameBoard.getVal(4), gameBoard.getVal(6)]];
+		diagonals.forEach(diagonal => {
+			if (diagonal.every(val => val === "X") || diagonal.every(val => val === "O"))
+				return true;
+		})
+		return false;
 	};
 
 	const checkIfDraw = () => {
@@ -90,7 +90,7 @@ function gameLogic() {
 
 	const checkIfPlacable = (num) => {
 		if (gameBoard.getVal(num) !== " ") {
-			console.log("This point has already been taken.");
+			// console.log("This point has already been taken.");
 			return false;
 		}
 
@@ -104,40 +104,68 @@ function gameLogic() {
 		return false;
 	}
 
+	const lockBoard = () => {
+		btnBoxes.forEach(btn => {
+			btn.setAttribute('disabled', '');
+		});
+	};
+
 	const place = (num) => {
 
-		if (num < 0 || num > 8) {
+		/* if (num < 0 || num > 8) {
 			console.log("Please enter a valid placement.");
 			return false;
-		}
+		} */
 
 		if (!checkIfPlacable(num))
-			return false;
+			return !turnO ? "O" : "X";
 
 		gameBoard.place(num, turnO ? "O" : "X");
 		console.log(gameBoard.getBoard());
 		
 		if (checkWin()) {
 			console.log(`${turnO ? "O" : "X"} Win!`);
-			resetGame();
-			return false;
+			lockBoard();
 		};
 
 		if (checkIfDraw()) {
-			console.log(gameBoard.getBoard());
-			console.log("The game ended in a draw.");
-			resetGame();
-			return false;
+			console.log("Game is drawn.")
+			lockBoard();
 		};
 		
 		turnO = !turnO;
+
+		return !turnO ? "O" : "X"
 	};
 
 	const resetGame = () => {
 		gameBoard.resetBoard();
 		turnO = true;
-		console.log("Please enter a number.");
+		btnBoxes.forEach(btn => {
+			btn.querySelector("span").textContent = ""
+			btn.removeAttribute('disabled');
+		})
 	};
 
-	return { place, checkWin };
+	return { place, checkWin, resetGame };
 }
+
+// Game Initialization
+const gameBlock = gameLogic();
+
+// DOM thingies
+const btnBoxes = document.querySelectorAll(".btn-box");
+const restartBtn = document.querySelector(".restart-btn");
+
+// Loop through the array of btnBoxes
+for (let i = 0; i < btnBoxes.length; i++) {
+	const curBtnBox = btnBoxes[i];
+	curBtnBox.addEventListener("click", () => {
+		curBtnBox.querySelector("span").textContent = gameBlock.place(i)
+	});
+}
+
+// Reset button
+restartBtn.addEventListener("click", () => {
+	gameBlock.resetGame();
+});
