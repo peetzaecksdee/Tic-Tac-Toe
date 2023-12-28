@@ -7,6 +7,8 @@
   --main-color: #3b4252;
   --hf-color: #2e3440;
   --secondary-color: #d8dee9;
+  --border-color: #81a1c1;
+  --button-hover-color: #434c5e;
 }
 
 * {
@@ -56,8 +58,12 @@ main {
   cursor: pointer;
   background: none;
   border: none;
-  border-bottom: 3px solid var(--hf-color);
-  border-right: 3px solid var(--hf-color);
+  border-bottom: 3px solid var(--border-color);
+  border-right: 3px solid var(--border-color);
+}
+
+.btn-box:hover {
+  background-color: var(--button-hover-color);
 }
 
 .no-r {
