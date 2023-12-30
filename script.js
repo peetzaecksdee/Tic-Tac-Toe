@@ -1,9 +1,3 @@
-/**
- * This function delays the thingy
- * @param {number} milliseconds 
- * @returns {Promise} TimeoutPromise
- */
-
 function initGameBoard() {
 	let gameBoard = [
 		" ", " ", " ",
@@ -38,7 +32,11 @@ function initGameBoard() {
  */
 function gameLogic() {
 	const gameBoard = initGameBoard();
-	let turnO = true;
+	let turnO = false;
+	// DOM thingies
+	const btnBoxes = document.querySelectorAll(".btn-box");
+	const restartBtn = document.querySelector(".restart-btn");
+	const headerTxt = document.querySelector(".header-text");
 	// console.log("Please enter a number.");
 
 	/** 
@@ -141,7 +139,7 @@ function gameLogic() {
 
 	const resetGame = () => {
 		gameBoard.resetBoard();
-		turnO = true;
+		turnO = (Math.round(Math.random()) === 1) ? false : true;
 		headerTxt.textContent = "Tic-Tac-Toe"
 		btnBoxes.forEach(btn => {
 			btn.querySelector("span").textContent = ""
@@ -149,30 +147,22 @@ function gameLogic() {
 		})
 	};
 
+	// Loop through the array of btnBoxes
+	for (let i = 0; i < btnBoxes.length; i++) {
+		const curBtnBox = btnBoxes[i];
+		curBtnBox.addEventListener("click", () => {
+			const placePos = place(i);
+
+			if (placePos) {
+				curBtnBox.querySelector("span").textContent = placePos;
+			}
+		});
+	}
+
+	// Reset button
+	restartBtn.addEventListener("click", () => resetGame());
+
 	return { place, checkWin, resetGame };
 }
 
-// Game Initialization
-const gameBlock = gameLogic();
-
-// DOM thingies
-const btnBoxes = document.querySelectorAll(".btn-box");
-const restartBtn = document.querySelector(".restart-btn");
-const headerTxt = document.querySelector(".header-text");
-
-// Loop through the array of btnBoxes
-for (let i = 0; i < btnBoxes.length; i++) {
-	const curBtnBox = btnBoxes[i];
-	curBtnBox.addEventListener("click", () => {
-		const placePos = gameBlock.place(i)
-
-		if (placePos) {
-			curBtnBox.querySelector("span").textContent = placePos
-		}
-	});
-}
-
-// Reset button
-restartBtn.addEventListener("click", () => {
-	gameBlock.resetGame();
-});
+gameLogic();
