@@ -75,6 +75,10 @@ main {
   border-bottom: none;
 }
 
+.announcer {
+  font-size: clamp(1rem, 10vw, 2rem);
+}
+
 /* the reset button */
 .restart-btn {
   background: none;
